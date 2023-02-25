@@ -8,7 +8,28 @@ public class AvlTree {
 
         public Node(String key){
             this.key = key;
+            height = 0;
             left = right = null;
+        }
+
+        int getBalance(){
+            return ((this.right == null) ? 0 : this.right.height) - ((this.left == null) ? 0 : this.left.height);
+        }
+
+        String findLeftKey(){
+            return (this.left == null) ? this.key : this.left.findLeftKey();
+        }
+
+        public void print() {
+            print("", this, false);
+        }
+
+        public void print(String prefix, Node n, boolean isRight) {
+            if (n != null) {
+                System.out.println (prefix + (isRight ? "|-- " : "\\-- ") + n.key);
+                print(prefix + (isRight ? "|   " : "    "), n.right, true);
+                print(prefix + (isRight ? "|   " : "    "), n.left, false);
+            }
         }
     }
 
@@ -38,31 +59,85 @@ public class AvlTree {
     }
 
     int refreshHeight(Node node){
-        if(node == null){
-            node.height = -1;
-            return -1;
-        }
-        else {
+        if(node != null){
             node.height = 1 + Math.max(refreshHeight(node.left), refreshHeight(node.right));
             return node.height;
         }
+        else {
+            return -1;
+        }
     }
 
-    int getBalance(Node node){
-        return (node == null) ? 0 : (node.right.height - node.left.height);
+    Node LeftLeft(Node x){
+        Node z = x.left;
+        Node y = z.right;
+
+        x.left = y;
+        z.right = x;
+
+        return z;
+    }
+
+    Node LeftRight(Node x){
+        Node z = x.left;
+        Node y = z.right;
+
+        x.left = y;
+        z.right = y.left;
+        y.left = z;
+
+        x = LeftLeft(x);
+
+        return x;
+    }
+
+    Node RightRight(Node x){
+        Node z = x.right;
+        Node y = z.left;
+
+        x.right = y;
+        z.left = x;
+
+        return z;
+    }
+
+    Node RightLeft(Node x){
+        Node z = x.right;
+        Node y = z.left;
+
+        x.right = y;
+        z.left = y.right;
+        y.right = z;
+
+        x = RightRight(x);
+
+        return x;
     }
 
     Node rebalance(Node node){
         refreshHeight(node);
 
+        if(node.getBalance() > 1){
+            if(node.right.getBalance() > 0)
+                node = RightRight(node);
+            else
+                node = RightLeft(node);
+        }
+        else if(node.getBalance() < -1){
+            if(node.left.getBalance() < 0)
+                node = LeftLeft(node);
+            else
+                node = LeftRight(node);
+        }
+
         return node;
     }
 
-    void insert(String key){
-        root = insert_new(root, key);
+    public void insert(String key){
+        root = insert(root, key);
     }
 
-    Node insert_new(Node node, String key){
+    Node insert(Node node, String key){
         if(node == null){
             return new Node(key);
         }
@@ -70,11 +145,43 @@ public class AvlTree {
         int compareValue = compareKeys(key, node.key);
 
         if(compareValue > 0){
-            node.right = insert_new(node.right, key);
+            node.right = insert(node.right, key);
         }
         else{
-            node.left = insert_new(node.left, key);
+            node.left = insert(node.left, key);
         }
         return rebalance(node);
+    }
+
+    Node delete(String key){
+        return delete(root, key);
+    }
+
+    Node delete(Node node, String key){
+        if(node != null){
+            if(compareKeys(key, node.key) > 0){
+                delete(node.right, key);
+            }
+            else if(compareKeys(key, node.key) < 0){
+                delete(node.left, key);
+            }
+            else if(node.left == null)
+                node = node.right;
+            else if(node.right == null)
+                node = node.left;
+            else{
+                node.key = node.right.findLeftKey();
+                node.right = delete(node.right, node.key);
+            }
+
+
+            node = rebalance(node);
+        }
+
+        return node;
+    }
+
+    public void print(){
+        root.print();
     }
 }
