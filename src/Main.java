@@ -1,5 +1,8 @@
 import BST.*;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Random;
 
 public class Main {
@@ -7,8 +10,25 @@ public class Main {
     public static void main(String[] args){
         AvlTree Tree = new AvlTree();
 
-        for(int i = 0; i < 50; i++)
-            Tree.insert(generateString());
+        try {
+            FileReader reader = new FileReader("test.txt");
+            BufferedReader bufferedReader = new BufferedReader(reader);
+
+            String line;
+
+            while ((line = bufferedReader.readLine()) != null) {
+                Tree.insert(line);
+            }
+            reader.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Tree.delete("adxxjusxpm");
+        Tree.delete("swqcqjceir");
+        Tree.delete("igunqxcmyp");
+        Tree.delete("jgdhglsyqt");
 
         Tree.print();
     }
