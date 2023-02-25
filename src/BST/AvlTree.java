@@ -26,7 +26,7 @@ public class AvlTree {
 
         public void print(String prefix, Node n, boolean isRight) {
             if (n != null) {
-                System.out.println (prefix + (isRight ? "|-- " : "\\-- ") + n.key);
+                System.out.println (prefix + (isRight ? "|-- " : "\\-- ") + n.key + " " + n.getBalance());
                 print(prefix + (isRight ? "|   " : "    "), n.right, true);
                 print(prefix + (isRight ? "|   " : "    "), n.left, false);
             }
@@ -153,17 +153,17 @@ public class AvlTree {
         return rebalance(node);
     }
 
-    Node delete(String key){
-        return delete(root, key);
+    public void delete(String key){
+        root = delete(root, key);
     }
 
     Node delete(Node node, String key){
         if(node != null){
             if(compareKeys(key, node.key) > 0){
-                delete(node.right, key);
+                node.right = delete(node.right, key);
             }
             else if(compareKeys(key, node.key) < 0){
-                delete(node.left, key);
+                node.left = delete(node.left, key);
             }
             else if(node.left == null)
                 node = node.right;
@@ -174,14 +174,15 @@ public class AvlTree {
                 node.right = delete(node.right, node.key);
             }
 
-
-            node = rebalance(node);
+            if(node != null)
+                node = rebalance(node);
         }
 
         return node;
     }
 
     public void print(){
-        root.print();
+        if(root != null)
+            root.print();
     }
 }
