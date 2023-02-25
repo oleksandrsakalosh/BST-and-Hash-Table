@@ -18,6 +18,25 @@ public class AvlTree {
         root = null;
     }
 
+    int compareKeys(String key1, String key2){
+        int length1 = key1.length();
+        int length2 = key2.length();
+        int minLength = Math.min(length1, length2);
+
+        for(int i = 0; i < minLength; i++){
+            int val1 = (int)key1.charAt(i);
+            int val2 = (int)key2.charAt(i);
+
+            if(val1 != val2)
+                return val2 - val1;
+        }
+
+        if(length1 != length2)
+            return length2 - length1;
+        else
+            return 0;
+    }
+
     int refreshHeight(Node node){
         if(node == null){
             node.height = -1;
