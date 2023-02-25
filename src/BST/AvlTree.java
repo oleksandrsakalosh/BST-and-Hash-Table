@@ -6,8 +6,8 @@ public class AvlTree {
         int height;
         Node left, right;
 
-        public Node(String data){
-            key = data;
+        public Node(String key){
+            this.key = key;
             left = right = null;
         }
     }
@@ -50,5 +50,31 @@ public class AvlTree {
 
     int getBalance(Node node){
         return (node == null) ? 0 : (node.right.height - node.left.height);
+    }
+
+    Node rebalance(Node node){
+        refreshHeight(node);
+
+        return node;
+    }
+
+    void insert(String key){
+        root = insert_new(root, key);
+    }
+
+    Node insert_new(Node node, String key){
+        if(node == null){
+            return new Node(key);
+        }
+
+        int compareValue = compareKeys(key, node.key);
+
+        if(compareValue > 0){
+            node.right = insert_new(node.right, key);
+        }
+        else{
+            node.left = insert_new(node.left, key);
+        }
+        return rebalance(node);
     }
 }
