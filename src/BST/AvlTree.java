@@ -181,6 +181,21 @@ public class AvlTree {
         return node;
     }
 
+    public Node find(String key){
+        return find(root, key);
+    }
+
+    Node find(Node node, String key){
+        if(node == null)
+            return null;
+        else if(compareKeys(key, node.key) > 0)
+            return find(node.right, key);
+        else if(compareKeys(key, node.key) < 0)
+            return find(node.left, key);
+
+        return node;
+    }
+
     public void print(){
         if(root != null)
             root.print();

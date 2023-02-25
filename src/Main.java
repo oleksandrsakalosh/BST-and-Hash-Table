@@ -31,6 +31,26 @@ public class Main {
         Tree.delete("jgdhglsyqt");
 
         Tree.print();
+
+        if(Tree.find("axrokashom") != null)
+            System.out.println("found\n");
+        else
+            System.out.println("did not find\n");
+
+        if(Tree.find("igunqxcmyp") != null)
+            System.out.println("found\n");
+        else
+            System.out.println("did not find\n");
+
+        if(Tree.find("loremipsum") != null)
+            System.out.println("found\n");
+        else
+            System.out.println("did not find\n");
+
+        if(Tree.find("yukkmklgoy") != null)
+            System.out.println("found\n");
+        else
+            System.out.println("did not find\n");
     }
 
     static String generateString(){
