@@ -12,11 +12,11 @@ public class AvlTree {
             left = right = null;
         }
 
-        int getBalance(){
+        public int getBalance(){
             return ((this.right == null) ? 0 : this.right.height) - ((this.left == null) ? 0 : this.left.height);
         }
 
-        String findLeftKey(){
+        public String findLeftKey(){
             return (this.left == null) ? this.key : this.left.findLeftKey();
         }
 
