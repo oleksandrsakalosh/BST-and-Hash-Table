@@ -1,27 +1,79 @@
 package BST;
 
 public class TwoThreeTree {
-    class Node{
+    class TTNode {
         String leftKey, rightKey;
-        Node left, center, right;
+        TTNode left, center, right;
 
-        public Node(String leftKey, String rightKey){
+        public TTNode(String leftKey, String rightKey, TTNode left, TTNode center, TTNode right){
             this.leftKey = leftKey;
             this.rightKey = rightKey;
-            left = center = right = null;
+            this.left = left;
+            this.right = right;
+            this.center = center;
         }
 
-        public Node(String leftKey){
+        public TTNode(String leftKey){
             this.leftKey = leftKey;
+            rightKey = null;
             left = center = right = null;
         }
 
-        public Node(){
-            left = center = right = null;
+        public boolean isLeaf(){ return this.left == null; }
+
+        public boolean isFull(){ return !(this.rightKey == null); }
+
+        public TTNode add(TTNode node){
+            if(this.isFull()){
+                if(compareKeys(leftKey, node.leftKey) > 0){ //Add left
+                    TTNode newNode = new TTNode(leftKey, null, node, this, null);
+
+                    node.left = left;
+                    leftKey = rightKey; rightKey = null;
+                    left = center; center = right; right = null;
+
+                    return newNode;
+                }
+                else if(compareKeys(rightKey, node.leftKey) < 0){ //Add right
+                    TTNode newNode = new TTNode(rightKey, null, this, node, null);
+
+                    node.left = right;
+                    rightKey = null;
+                    right = null;
+
+                    return newNode;
+                }
+                else{ //Add center
+                    TTNode newNode = new TTNode(rightKey, null, node.center, this, null);
+
+                    node.center = newNode;
+                    node.left = this;
+                    rightKey = null;
+                    right = null;
+
+                    return node;
+                }
+
+            }
+            else{
+                if(compareKeys(leftKey, node.leftKey) < 0){
+                    rightKey = node.leftKey;
+                    center = node.left;
+                    right = node.center;
+                }
+                else {
+                    rightKey = leftKey;
+                    right = center;
+                    leftKey = node.leftKey;
+                    center = node.center;
+                }
+                return this;
+            }
         }
+
     }
 
-    Node root;
+    TTNode root;
 
     public TwoThreeTree() { root = null; }
 
@@ -44,5 +96,39 @@ public class TwoThreeTree {
             return 0;
     }
 
+    public TTNode insert(TTNode node, String key){
+        if(node == null)
+            return new TTNode(key);
 
+        else if(node.isLeaf()){
+            return node.add(new TTNode(key));
+        }
+
+        TTNode returnedNode;
+        if(compareKeys(key, node.leftKey) < 0) {
+            returnedNode = insert(node.left, key);
+            if(returnedNode == node.left)
+                return node;
+            else
+                return node.add(returnedNode);
+        }
+        else if(!node.isFull() || compareKeys(key, node.rightKey) < 0) {
+            returnedNode = insert(node.center, key);
+            if(returnedNode == node.center)
+                return node;
+            else
+                return node.add(returnedNode);
+        }
+        else {
+            returnedNode = insert(node.right, key);
+            if(returnedNode == node.right)
+                return node;
+            else
+                return node.add(returnedNode);
+        }
+    }
+
+    public void insert(String key){
+        root = insert(root, key);
+    }
 }

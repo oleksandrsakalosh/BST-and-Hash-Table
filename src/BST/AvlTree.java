@@ -1,12 +1,12 @@
 package BST;
 
 public class AvlTree {
-    class Node{
+    class AVLNode {
         String key;
         int height;
-        Node left, right;
+        AVLNode left, right;
 
-        public Node(String key){
+        public AVLNode(String key){
             this.key = key;
             height = 0;
             left = right = null;
@@ -24,7 +24,7 @@ public class AvlTree {
             print("", this, false);
         }
 
-        public void print(String prefix, Node n, boolean isRight) {
+        public void print(String prefix, AVLNode n, boolean isRight) {
             if (n != null) {
                 System.out.println (prefix + (isRight ? "|-- " : "\\-- ") + n.key + " " + n.getBalance());
                 print(prefix + (isRight ? "|   " : "    "), n.right, true);
@@ -33,7 +33,7 @@ public class AvlTree {
         }
     }
 
-    Node root;
+    AVLNode root;
 
     public AvlTree(){
         root = null;
@@ -58,7 +58,7 @@ public class AvlTree {
             return 0;
     }
 
-    int refreshHeight(Node node){
+    int refreshHeight(AVLNode node){
         if(node != null){
             node.height = 1 + Math.max(refreshHeight(node.left), refreshHeight(node.right));
             return node.height;
@@ -68,9 +68,9 @@ public class AvlTree {
         }
     }
 
-    Node LeftLeft(Node x){
-        Node z = x.left;
-        Node y = z.right;
+    AVLNode LeftLeft(AVLNode x){
+        AVLNode z = x.left;
+        AVLNode y = z.right;
 
         x.left = y;
         z.right = x;
@@ -78,9 +78,9 @@ public class AvlTree {
         return z;
     }
 
-    Node LeftRight(Node x){
-        Node z = x.left;
-        Node y = z.right;
+    AVLNode LeftRight(AVLNode x){
+        AVLNode z = x.left;
+        AVLNode y = z.right;
 
         x.left = y;
         z.right = y.left;
@@ -91,9 +91,9 @@ public class AvlTree {
         return x;
     }
 
-    Node RightRight(Node x){
-        Node z = x.right;
-        Node y = z.left;
+    AVLNode RightRight(AVLNode x){
+        AVLNode z = x.right;
+        AVLNode y = z.left;
 
         x.right = y;
         z.left = x;
@@ -101,9 +101,9 @@ public class AvlTree {
         return z;
     }
 
-    Node RightLeft(Node x){
-        Node z = x.right;
-        Node y = z.left;
+    AVLNode RightLeft(AVLNode x){
+        AVLNode z = x.right;
+        AVLNode y = z.left;
 
         x.right = y;
         z.left = y.right;
@@ -114,7 +114,7 @@ public class AvlTree {
         return x;
     }
 
-    Node rebalance(Node node){
+    AVLNode rebalance(AVLNode node){
         refreshHeight(node);
 
         if(node.getBalance() > 1){
@@ -137,9 +137,9 @@ public class AvlTree {
         root = insert(root, key);
     }
 
-    Node insert(Node node, String key){
+    AVLNode insert(AVLNode node, String key){
         if(node == null){
-            return new Node(key);
+            return new AVLNode(key);
         }
 
         int compareValue = compareKeys(key, node.key);
@@ -157,7 +157,7 @@ public class AvlTree {
         root = delete(root, key);
     }
 
-    Node delete(Node node, String key){
+    AVLNode delete(AVLNode node, String key){
         if(node != null){
             if(compareKeys(key, node.key) > 0){
                 node.right = delete(node.right, key);
@@ -181,11 +181,11 @@ public class AvlTree {
         return node;
     }
 
-    public Node find(String key){
+    public AVLNode find(String key){
         return find(root, key);
     }
 
-    Node find(Node node, String key){
+    AVLNode find(AVLNode node, String key){
         if(node == null)
             return null;
         else if(compareKeys(key, node.key) > 0)

@@ -8,7 +8,8 @@ import java.util.Random;
 public class Main {
 
     public static void main(String[] args){
-        AvlTree Tree = new AvlTree();
+        AvlTree avlTree = new AvlTree();
+        TwoThreeTree ttTree = new TwoThreeTree();
 
         try {
             FileReader reader = new FileReader("test.txt");
@@ -17,7 +18,9 @@ public class Main {
             String line;
 
             while ((line = bufferedReader.readLine()) != null) {
-                Tree.insert(line);
+                avlTree.insert(line);
+                ttTree.insert(line);
+
             }
             reader.close();
 
@@ -25,29 +28,29 @@ public class Main {
             e.printStackTrace();
         }
 
-        Tree.delete("adxxjusxpm");
-        Tree.delete("swqcqjceir");
-        Tree.delete("igunqxcmyp");
-        Tree.delete("jgdhglsyqt");
+        avlTree.delete("adxxjusxpm");
+        avlTree.delete("swqcqjceir");
+        avlTree.delete("igunqxcmyp");
+        avlTree.delete("jgdhglsyqt");
 
-        Tree.print();
+        avlTree.print();
 
-        if(Tree.find("axrokashom") != null)
+        if(avlTree.find("axrokashom") != null)
             System.out.println("found\n");
         else
             System.out.println("did not find\n");
 
-        if(Tree.find("igunqxcmyp") != null)
+        if(avlTree.find("igunqxcmyp") != null)
             System.out.println("found\n");
         else
             System.out.println("did not find\n");
 
-        if(Tree.find("loremipsum") != null)
+        if(avlTree.find("loremipsum") != null)
             System.out.println("found\n");
         else
             System.out.println("did not find\n");
 
-        if(Tree.find("yukkmklgoy") != null)
+        if(avlTree.find("yukkmklgoy") != null)
             System.out.println("found\n");
         else
             System.out.println("did not find\n");
