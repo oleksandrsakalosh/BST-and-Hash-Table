@@ -71,6 +71,14 @@ public class TwoThreeTree {
             }
         }
 
+        public void print(String prefix, TTNode n, boolean isLeft) {
+            if (n != null) {
+                System.out.println (prefix + (isLeft ? "\\-- " : "|-- ") + n.leftKey + " | " + n.rightKey);
+                print(prefix + (isLeft ? "    " : "|   "), n.right, false);
+                print(prefix + (isLeft ? "    " : "|   "), n.center, false);
+                print(prefix + (isLeft ? "    " : "|   "), n.left, true);
+            }
+        }
     }
 
     TTNode root;
@@ -130,5 +138,9 @@ public class TwoThreeTree {
 
     public void insert(String key){
         root = insert(root, key);
+    }
+
+    public void print(){
+        root.print("", root, false);
     }
 }

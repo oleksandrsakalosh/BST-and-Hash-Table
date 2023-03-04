@@ -54,6 +54,10 @@ public class Main {
             System.out.println("found\n");
         else
             System.out.println("did not find\n");
+
+        System.out.println("-------------------");
+
+        ttTree.print();
     }
 
     static String generateString(){
