@@ -58,6 +58,15 @@ public class Main {
         System.out.println("-------------------");
 
         ttTree.print();
+
+        ttTree.delete("adxxjusxpm");
+        ttTree.delete("swqcqjceir");
+        ttTree.delete("igunqxcmyp");
+        ttTree.delete("jgdhglsyqt");
+
+        System.out.println("-------------------");
+
+        ttTree.print();
     }
 
     static String generateString(){
