@@ -1,14 +1,14 @@
 package BST;
 
 public class AvlTree {
-    class AVLNode {
-        String key;
+    public class AVLNode {
+        public String key;
         int height;
         AVLNode left, right;
 
         public AVLNode(String key){
             this.key = key;
-            height = 0;
+            height = 1;
             left = right = null;
         }
 
@@ -58,14 +58,8 @@ public class AvlTree {
             return 0;
     }
 
-    int refreshHeight(AVLNode node){
-        if(node != null){
-            node.height = 1 + Math.max(refreshHeight(node.left), refreshHeight(node.right));
-            return node.height;
-        }
-        else {
-            return -1;
-        }
+    int findMaxHeight(AVLNode x, AVLNode y){
+        return Math.max((x == null) ? 0 : x.height, (y == null) ? 0 : y.height);
     }
 
     AVLNode LeftLeft(AVLNode x){
@@ -74,6 +68,9 @@ public class AvlTree {
 
         x.left = y;
         z.right = x;
+
+        x.height = 1 + findMaxHeight(x.left, x.right);
+        z.height = 1 + findMaxHeight(z.left, z.right);
 
         return z;
     }
@@ -85,6 +82,10 @@ public class AvlTree {
         x.left = y;
         z.right = y.left;
         y.left = z;
+
+        z.height = 1 + findMaxHeight(z.left, z.right);
+        y.height = 1 + findMaxHeight(y.left, y.right);
+        x.height = 1 + findMaxHeight(x.left, x.right);
 
         x = LeftLeft(x);
 
@@ -98,6 +99,9 @@ public class AvlTree {
         x.right = y;
         z.left = x;
 
+        x.height = 1 + findMaxHeight(x.left, x.right);
+        z.height = 1 + findMaxHeight(z.left, z.right);
+
         return z;
     }
 
@@ -109,13 +113,16 @@ public class AvlTree {
         z.left = y.right;
         y.right = z;
 
+        z.height = 1 + findMaxHeight(z.left, z.right);
+        y.height = 1 + findMaxHeight(y.left, y.right);
+        x.height = 1 + findMaxHeight(x.left, x.right);
+
         x = RightRight(x);
 
         return x;
     }
 
     AVLNode rebalance(AVLNode node){
-        refreshHeight(node);
 
         if(node.getBalance() > 1){
             if(node.right.getBalance() > 0)
@@ -147,9 +154,16 @@ public class AvlTree {
         if(compareValue > 0){
             node.right = insert(node.right, key);
         }
-        else{
+        else if(compareValue < 0){
             node.left = insert(node.left, key);
         }
+        else {
+            System.out.println("The key " + key + " is already exists.");
+            return node;
+        }
+
+        node.height = 1 + findMaxHeight(node.left, node.right);
+
         return rebalance(node);
     }
 
@@ -159,10 +173,11 @@ public class AvlTree {
 
     AVLNode delete(AVLNode node, String key){
         if(node != null){
-            if(compareKeys(key, node.key) > 0){
+            int compareValue = compareKeys(key, node.key);
+            if(compareValue > 0){
                 node.right = delete(node.right, key);
             }
-            else if(compareKeys(key, node.key) < 0){
+            else if(compareValue < 0){
                 node.left = delete(node.left, key);
             }
             else if(node.left == null)
@@ -174,9 +189,13 @@ public class AvlTree {
                 node.right = delete(node.right, node.key);
             }
 
-            if(node != null)
+            if(node != null) {
+                node.height = 1 + findMaxHeight(node.left, node.right);
                 node = rebalance(node);
+            }
         }
+        else
+            System.out.println("The key " + key + " was not found.");
 
         return node;
     }
@@ -186,11 +205,14 @@ public class AvlTree {
     }
 
     AVLNode find(AVLNode node, String key){
-        if(node == null)
+        if(node == null) {
+            System.out.println("The key " + key + " was not found.");
             return null;
-        else if(compareKeys(key, node.key) > 0)
+        }
+        int compareValue = compareKeys(key, node.key);
+        if(compareValue > 0)
             return find(node.right, key);
-        else if(compareKeys(key, node.key) < 0)
+        if(compareValue < 0)
             return find(node.left, key);
 
         return node;

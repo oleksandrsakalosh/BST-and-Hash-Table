@@ -80,9 +80,8 @@ public class TwoThreeTree {
     }
 
     TTNode root;
-    boolean successDeletion;
 
-    public TwoThreeTree() { root = null;  successDeletion = true; }
+    public TwoThreeTree() { root = null; }
 
     int compareKeys(String key1, String key2){
         int length1 = key1.length();
@@ -139,7 +138,7 @@ public class TwoThreeTree {
                 }
             }
         }
-        else if(!node.isFull() || compareKeys(key, node.rightKey) < 0) {
+        else if((!node.isFull() || compareKeys(key, node.rightKey) < 0) && !key.equals(node.leftKey)) {
             returnedNode = insert(node.center, key);
             if(returnedNode.promoting){
                 returnedNode.promoting = false;
@@ -161,7 +160,7 @@ public class TwoThreeTree {
                 }
             }
         }
-        else {
+        else if(node.isFull() && compareKeys(key, node.rightKey) > 0){
             returnedNode = insert(node.right, key);
             if(returnedNode.promoting){
                 returnedNode.promoting = false;
@@ -177,6 +176,8 @@ public class TwoThreeTree {
             }
 
         }
+        else
+            System.out.println("The key " + key + " is already exists.");
 
         return node;
     }
@@ -186,8 +187,20 @@ public class TwoThreeTree {
     }
 
     public TTNode delete(TTNode node, String key){
-        if(node == null)
+        if(node == null) {
+            System.out.println("The key " + key + " was not found.");
             return null;
+        }
+        if(node.leftKey == null){
+            System.out.println("Left key is null");
+            if(node == root)
+                System.out.println("node is root");
+            if(node.rightKey != null)
+                System.out.println("Right key " + node.rightKey);
+            if(node.left != null){
+                System.out.println("Left child key " + node.left.leftKey);
+            }
+        }
 
         if(compareKeys(node.leftKey, key) == 0){
             if(!node.isLeaf() && !node.center.isLeaf()) {
@@ -217,6 +230,8 @@ public class TwoThreeTree {
                         node.left.right = node.center.left;
                         node.center = null;
                         node.leftKey = null;
+                        if(node == root)
+                            node = node.left;
                     }
                 }
             }
@@ -241,6 +256,8 @@ public class TwoThreeTree {
                     node.left.rightKey = node.center.leftKey;
                     node.center = null;
                     node.leftKey = null;
+                    if(node == root)
+                        node = node.left;
                 }
             }
 
@@ -320,11 +337,13 @@ public class TwoThreeTree {
                             node.left.rightKey = node.center.leftKey;
                             node.center = null;
                             node.leftKey = null;
+                            if(node == root)
+                                node = node.left;
                         }
                     }
                 }
                 else {// if it doesn't have a key to be found the deletion can't be done
-                    successDeletion = false;
+                    System.out.println("The key " + key + " was not found.");
                 }
             }
             else {
@@ -358,6 +377,8 @@ public class TwoThreeTree {
                         node.left.right = node.center.center;
                         node.center = null;
                         node.leftKey = null;
+                        if(node == root)
+                            node = node.left;
                     }
                 }
             }
@@ -387,11 +408,13 @@ public class TwoThreeTree {
                             node.left.rightKey = node.leftKey;
                             node.center = null;
                             node.leftKey = null;
+                            if(node == root)
+                                node = node.left;
                         }
                     }
                 }
                 else {// if it doesn't have a key to be found the deletion can't be done
-                    successDeletion = false;
+                    System.out.println("The key " + key + " was not found.");
                 }
             }
             else {
@@ -419,6 +442,8 @@ public class TwoThreeTree {
                         node.left.right = node.center.left;
                         node.center = null;
                         node.leftKey = null;
+                        if(node == root)
+                            node = node.left;
                     }
                 }
             }
@@ -445,7 +470,7 @@ public class TwoThreeTree {
                     }
                 }
                 else {// if it doesn't have a key to be found the deletion can't be done
-                    successDeletion = false;
+                    System.out.println("The key " + key + " was not found.");
                 }
             }
             else {
@@ -474,14 +499,24 @@ public class TwoThreeTree {
 
     }
 
-    public void delete(String key){
-        root = delete(root, key);
-        if(successDeletion)
-            System.out.println(key + " was successfully deleted.");
+    public void delete(String key){ root = delete(root, key); }
+
+    public TTNode find(TTNode node, String key){
+        if(node == null) {
+            System.out.println("The key " + key + " was not found.");
+            return null;
+        }
+        if(node.has(key))
+            return node;
+        if(compareKeys(key, node.leftKey) < 0)
+            return find(node.left, key);
+        if(!node.isFull() || compareKeys(key, node.rightKey) < 0)
+            return find(node.center, key);
         else
-            System.out.println(key + " was not found.");
-        successDeletion = true;
+            return find(node.right, key);
     }
+
+    public TTNode find(String key){ return find(root, key); }
 
     public void print(){
         root.print("", root, false);
