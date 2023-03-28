@@ -1,4 +1,4 @@
-import BST.*;
+import HashTable.*;
 
 import java.io.*;
 import java.util.Random;
@@ -7,6 +7,21 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
+        LinearProbing hashTable = new LinearProbing();
+
+        FileReader reader = new FileReader("test.txt");
+        BufferedReader bufferedReader = new BufferedReader(reader);
+        String line;
+
+        long start = System.currentTimeMillis();
+        for(int i = 0; i < 10; i++) {
+            line = bufferedReader.readLine();
+            hashTable.insert(line);
+        }
+        long elapsedTimeMillis = System.currentTimeMillis()-start;
+        System.out.println("Hash table insert of 1 000 000 keys: " + Float.toString(elapsedTimeMillis/1000F) + "s.");
+
+/*
         AvlTree avlTree = new AvlTree();
         TwoThreeTree ttTree = new TwoThreeTree();
 
@@ -206,8 +221,8 @@ public class Main {
         System.out.println("2-3 Tree deletion of 1 000 000 keys: " + Float.toString(elapsedTimeMillis/1000F) + "s.");
 
         reader.close();
-
-        /*
+*/
+/*
         BufferedWriter writer = new BufferedWriter(new FileWriter("test.txt"));
 
         for(int i = 0; i < 1000000; i++){
@@ -215,14 +230,13 @@ public class Main {
             writer.write(str + '\n');
         }
         writer.close();
-         */
-
+ */
     }
 
     static String generateString(){
         int leftLimit = 97; // letter 'a'
         int rightLimit = 122; // letter 'z'
-        int targetStringLength = 30;
+        int targetStringLength = 10;
         Random random = new Random();
         StringBuilder buffer = new StringBuilder(targetStringLength);
         for (int i = 0; i < targetStringLength; i++) {

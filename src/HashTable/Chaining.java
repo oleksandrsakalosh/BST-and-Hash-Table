@@ -1,7 +1,7 @@
 package HashTable;
 
 public class Chaining {
-    class ChainNode{
+    private class ChainNode{
         String key;
         ChainNode next;
 
@@ -11,7 +11,7 @@ public class Chaining {
         }
     }
 
-    class HashTable{
+    private class HashTable{
         ChainNode[] table;
         int size, nodeCount;
 
@@ -77,17 +77,8 @@ public class Chaining {
     }
 
     int getNextPrime(int num){
-        boolean isPrime = true;
-
-        for(int i = 2; i < num; i++){
-            if(num % i == 0)
-                isPrime = false;
-        }
-        if(isPrime)
-            return num;
-
         num++;
-        for(int i = 2; i < num; i++){
+        for(int i = 2; i < (num / 2); i++){
             if(num % i == 0){
                 num++;
                 i = 2;
