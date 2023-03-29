@@ -1,118 +1,117 @@
 package HashTable;
 
-public class LinearProbing {
+public class LinearProbing extends HashTable {
 
-    private class HashTable{
+    // Hash table that contains table with keys, size of table and count of node
+    private class Table{
         String[] table;
         int size, nodeCount;
 
-        public HashTable(int size){
+        // Constructor for new table
+        public Table(int size){
             table = new String[size];
             this.size = size;
             nodeCount = 0;
         }
+
+        // insert new key in table
+        void insert(String key){
+            // getting hash value for key
+            long hash1 = getHash(key);
+            int hash = (int) (hash1 % this.size);
+
+            // going through all table until we find free cell
+            while (this.table[hash] != null) {
+                if (hash == this.size - 1)
+                    hash = 0;
+                else
+                    hash++;
+            }
+
+            // if position at this hash is free adding new key
+            this.table[hash] = key;
+            this.nodeCount++;
+        }
     }
 
-    int INIT_SIZE = 7;
-    HashTable table1, table2;
+    // First table is regular and the second one is used when increasing table size
+    Table table1, table2;
 
+    // Constructor for new Hash table
     public LinearProbing(){
-        table1 = new HashTable(INIT_SIZE);
+        table1 = new Table(INIT_SIZE);
         table2 = null;
     }
 
-    long getHash(String key){
-        return (key.length() != 1) ? (33 * getHash(key.substring(1)) + (int)key.charAt(0)) : ((int)key.charAt(0));
-    }
-
-    void insert(String key, HashTable hTable){
-        long hash1 = getHash(key);
-        int hash = (int) (hash1 % hTable.size);
-
-        while (hTable.table[hash] != null) {
-            if (hash == hTable.size - 1)
-                hash = 0;
-            else
-                hash++;
-        }
-
-        hTable.table[hash] = key;
-        hTable.nodeCount++;
-    }
-
+    // inserting in table and checking if it need to be increased
     public void insert(String key){
-        insert(key, table1);
+        table1.insert(key);
         if((float) table1.nodeCount / (float) table1.size > 0.75){
             increaseTableSize();
         }
     }
 
+    // increasing the size of the table
     void increaseTableSize(){
-        table2 = new HashTable(getNextPrime(table1.size * 2));
+        // creating temporary table with new size
+        table2 = new Table(getNextPrime(table1.size * 2));
 
+        // filling it with old keys
         for (int i = 0; i < table1.size; i ++){
             if(table1.table[i] != null){
-                insert(table1.table[i], table2);
+                table2.insert(table1.table[i]);
             }
         }
 
+        // replacing regular table with new one
         table1 = table2;
         table2 = null;
     }
 
-    int getNextPrime(int num){
-        num++;
-        for(int i = 2; i < (num / 2); i++){
-            if(num % i == 0){
-                num++;
-                i = 2;
-            }
-        }
-        return num;
-    }
-
+    //deleting tke key from table
     public void delete(String key){
+        // getting hash value for key
         long hash1 = getHash(key);
         int hash = (int) (hash1 % table1.size);
-        int native_hash = hash;
+        int native_hash = hash;// remembering position we started from
+        // going through entire table until we find needed key
         while(table1.table[hash] == null || !table1.table[hash].equals(key)) {
+            //if we got to the end of table going to the first cell
             if(hash == table1.size - 1)
                 hash = 0;
             else
                 hash++;
+            // if we made a loop then key is missing in the tree
             if(hash == native_hash){
                 System.out.println(key + " was not found.");
                 return;
             }
         }
+        //deleting key from tree
         table1.table[hash] = null;
         table1.nodeCount--;
     }
 
+    // Finding key in the tree
     public String find(String key){
+        // getting hash value for key
         long hash1 = getHash(key);
         int hash = (int) (hash1 % table1.size);
-        int native_hash = hash;
+        int native_hash = hash;// remembering position we started from
+        // going through entire table until we find needed key
         while(table1.table[hash] == null || !table1.table[hash].equals(key)) {
+            //if we got to the end of table going to the first cell
             if(hash == table1.size - 1)
                 hash = 0;
             else
                 hash++;
+            // if we made a loop then key is missing in the tree
             if(hash == native_hash){
                 System.out.println(key + " was not found.");
                 return null;
             }
         }
+        // returning found key
         return table1.table[hash];
-    }
-
-    public void print(){
-        System.out.print("[");
-        for(int i = 0; i < table1.size; i++){
-            if(table1.table[i] != null){
-                System.out.print(table1.table[i] + ",\n");
-            }
-        }
-        System.out.println("]\n" + table1.size + "\n" + table1.nodeCount);
     }
 }
