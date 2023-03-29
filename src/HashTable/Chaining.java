@@ -101,26 +101,19 @@ public class Chaining extends HashTable {
             }
             // otherwise going through entire chain to find needed node
             else {
-                boolean delete = false;
                 while (temp.next != null) {
                     // if we found needed node then deleting it
                     if (temp.next.key.equals(key)) {
                         temp.next = temp.next.next;
                         table1.nodeCount--;
-                        delete = true;
                         break;
                     }
                     temp = temp.next;
                 }
                 // if we didn't find needed node them it's missing in the tree
-                if(!delete)
-                    System.out.println(key + " was not found.");
             }
         }
         // if cell is empty then key is missing in the tree
-        else{
-            System.out.println(key + " was not found.");
-        }
     }
 
     // Finding key in the tree
@@ -139,7 +132,6 @@ public class Chaining extends HashTable {
             }
         }
         // if cell is empty then key is missing in the tree
-        System.out.println(key + " was not found.");
         return null;
     }
 }

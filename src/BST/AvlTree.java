@@ -188,7 +188,6 @@ public class AvlTree {
         }
         // If the key is already present in the tree, print a message and return the current node.
         else {
-            System.out.println("The key " + key + " is already exists.");
             return node;
         }
 
@@ -233,8 +232,6 @@ public class AvlTree {
                 node = rebalance(node);
             }
         }
-        else
-            System.out.println("The key " + key + " was not found.");
 
         return node;
     }
@@ -247,7 +244,6 @@ public class AvlTree {
     // Find a node with a specific key in the subtree rooted at node
     AVLNode find(AVLNode node, String key){
         if(node == null) {
-            System.out.println("The key " + key + " was not found.");
             return null;
         }
         int compareValue = compareKeys(key, node.key);

@@ -11,16 +11,18 @@ public class Main {
         Tester test = new Tester();
 
         test.firstScenario();
+        test.refresh();
+        test.secondScenario();
 
-/*
-        BufferedWriter writer = new BufferedWriter(new FileWriter("test.txt"));
+        /*
+        BufferedWriter writer = new BufferedWriter(new FileWriter("test2.txt"));
 
-        for(int i = 0; i < 1000000; i++){
+        for(int i = 0; i < 75000; i++){
             String str = generateString();
             writer.write(str + '\n');
         }
         writer.close();
- */
+         */
     }
 
     static String generateString(){

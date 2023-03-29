@@ -196,9 +196,6 @@ public class TwoThreeTree {
                 node.right = null;
             }
         }
-        else{
-            System.out.println("The key " + key + " is already exists.");
-        }
 
         return node;
     }
@@ -210,7 +207,6 @@ public class TwoThreeTree {
     public TTNode delete(TTNode node, String key){
 
         if(node == null) {
-            System.out.println("The key " + key + " was not found.");
             return null;
         }
 
@@ -379,9 +375,6 @@ public class TwoThreeTree {
                         }
                     }
                 }
-                else {// if it doesn't have a key to be found the deletion can't be done
-                    System.out.println("The key " + key + " was not found.");
-                }
             }
             else {
                 node.left = delete(node.left, key);// If children isn't leaf diving into left children to find key
@@ -450,9 +443,6 @@ public class TwoThreeTree {
                         }
                     }
                 }
-                else {// if it doesn't have a key to be found the deletion can't be done
-                    System.out.println("The key " + key + " was not found.");
-                }
             }
             else {
                 node.center = delete(node.center, key);// If children isn't leaf diving into center children to find key
@@ -506,9 +496,6 @@ public class TwoThreeTree {
                         }
                     }
                 }
-                else {// if it doesn't have a key to be found the deletion can't be done
-                    System.out.println("The key " + key + " was not found.");
-                }
             }
             else {
                 node.right = delete(node.right, key);// If children isn't leaf diving into right children to find key
@@ -541,7 +528,6 @@ public class TwoThreeTree {
     public TTNode find(TTNode node, String key){
         //if current node is null then key is missing in tree
         if(node == null) {
-            System.out.println("The key " + key + " was not found.");
             return null;
         }
         // if node has key then we found it

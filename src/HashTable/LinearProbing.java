@@ -83,7 +83,6 @@ public class LinearProbing extends HashTable {
                 hash++;
             // if we made a loop then key is missing in the tree
             if(hash == native_hash){
-                System.out.println(key + " was not found.");
                 return;
             }
         }
@@ -107,7 +106,6 @@ public class LinearProbing extends HashTable {
                 hash++;
             // if we made a loop then key is missing in the tree
             if(hash == native_hash){
-                System.out.println(key + " was not found.");
                 return null;
             }
         }

@@ -26,18 +26,25 @@ public class Tester {
         ttTree = new TwoThreeTree();
         hash1 = new Chaining();
         hash2 = new LinearProbing();
+    }
 
-        reader = new FileReader("test.txt");
-        bufferedReader = new BufferedReader(reader);
+    public void refresh(){
+        avlTree = new AvlTree();
+        ttTree = new TwoThreeTree();
+        hash1 = new Chaining();
+        hash2 = new LinearProbing();
     }
 
     public void firstScenario() throws IOException {
+        reader = new FileReader("test.txt");
+        bufferedReader = new BufferedReader(reader);
+
         start = System.currentTimeMillis();
         for(int i = 0; i < 1000; i++) {
             line = bufferedReader.readLine();
             avlTree.insert(line);
         }
-        long elapsedTimeMillis = System.currentTimeMillis()-start;
+        elapsedTimeMillis = System.currentTimeMillis()-start;
         System.out.println("AVL Tree insert of 1 000 keys: " + Float.toString(elapsedTimeMillis/1000F) + "s.");
 
         for(int i = 1000; i < 10000; i++) {
@@ -413,5 +420,119 @@ public class Tester {
         }
         elapsedTimeMillis = System.currentTimeMillis()-start;
         System.out.println("Linear probing Hash table deletion of 1 000 000 keys: " + Float.toString(elapsedTimeMillis/1000F) + "s.");
+    }
+
+    public void secondScenario() throws IOException {
+        reader = new FileReader("test.txt");
+        bufferedReader = new BufferedReader(reader);
+
+        start = System.currentTimeMillis();
+        for(int i = 0; i < 100000; i++) {
+            line = bufferedReader.readLine();
+            avlTree.insert(line);
+        }
+        for(int i = 0; i < 25000; i++) {
+            line = bufferedReader.readLine();
+            avlTree.insert(line);
+        }
+        for(int i = 0; i < 25000; i++) {
+            line = bufferedReader.readLine();
+            if(avlTree.find(line) != null)
+                System.out.println("Error.");
+        }
+        for(int i = 0; i < 25000; i++) {
+            line = bufferedReader.readLine();
+            avlTree.delete(line);
+        }
+        for(int i = 0; i < 25000; i++) {
+            line = bufferedReader.readLine();
+            avlTree.delete(line);
+        }
+        elapsedTimeMillis = System.currentTimeMillis()-start;
+        System.out.println("AVL Tree second scenario: " + Float.toString(elapsedTimeMillis/1000F) + "s.");
+
+        reader = new FileReader("test.txt");
+        bufferedReader = new BufferedReader(reader);
+
+        start = System.currentTimeMillis();
+        for(int i = 0; i < 100000; i++) {
+            line = bufferedReader.readLine();
+            ttTree.insert(line);
+        }
+        for(int i = 0; i < 25000; i++) {
+            line = bufferedReader.readLine();
+            ttTree.insert(line);
+        }
+        for(int i = 0; i < 25000; i++) {
+            line = bufferedReader.readLine();
+            if(ttTree.find(line) != null)
+                System.out.println("Error.");
+        }
+        for(int i = 0; i < 25000; i++) {
+            line = bufferedReader.readLine();
+            ttTree.delete(line);
+        }
+        for(int i = 0; i < 25000; i++) {
+            line = bufferedReader.readLine();
+            ttTree.delete(line);
+        }
+        elapsedTimeMillis = System.currentTimeMillis()-start;
+        System.out.println("2-3 Tree second scenario: " + Float.toString(elapsedTimeMillis/1000F) + "s.");
+
+        reader = new FileReader("test.txt");
+        bufferedReader = new BufferedReader(reader);
+
+        start = System.currentTimeMillis();
+        for(int i = 0; i < 100000; i++) {
+            line = bufferedReader.readLine();
+            hash1.insert(line);
+        }
+        for(int i = 0; i < 25000; i++) {
+            line = bufferedReader.readLine();
+            hash1.insert(line);
+        }
+        for(int i = 0; i < 25000; i++) {
+            line = bufferedReader.readLine();
+            if(hash1.find(line) != null)
+                System.out.println("Error.");
+        }
+        for(int i = 0; i < 25000; i++) {
+            line = bufferedReader.readLine();
+            hash1.delete(line);
+        }
+        for(int i = 0; i < 25000; i++) {
+            line = bufferedReader.readLine();
+            hash1.delete(line);
+        }
+        elapsedTimeMillis = System.currentTimeMillis()-start;
+        System.out.println("Chaining Hash table second scenario: " + Float.toString(elapsedTimeMillis/1000F) + "s.");
+
+        reader = new FileReader("test.txt");
+        bufferedReader = new BufferedReader(reader);
+
+        start = System.currentTimeMillis();
+        for(int i = 0; i < 100000; i++) {
+            line = bufferedReader.readLine();
+            hash2.insert(line);
+        }
+        for(int i = 0; i < 25000; i++) {
+            line = bufferedReader.readLine();
+            hash2.insert(line);
+        }
+        for(int i = 0; i < 25000; i++) {
+            line = bufferedReader.readLine();
+            if(hash2.find(line) != null)
+                System.out.println("Error.");
+        }
+        for(int i = 0; i < 25000; i++) {
+            line = bufferedReader.readLine();
+            hash2.delete(line);
+        }
+        for(int i = 0; i < 25000; i++) {
+            line = bufferedReader.readLine();
+            hash2.delete(line);
+        }
+        elapsedTimeMillis = System.currentTimeMillis()-start;
+        System.out.println("Linear probing Hash table second scenario: " + Float.toString(elapsedTimeMillis/1000F) + "s.");
     }
 }
